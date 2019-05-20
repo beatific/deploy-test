@@ -30,7 +30,7 @@ podTemplate(label: 'deploy-test', containers: [
           // Get the Maven tool.
           // ** NOTE: This 'M3' Maven tool must be configured
           // **       in the global configuration.
-          mvnHome = tool 'M3'
+        //  mvnHome = tool 'M3'
         }
 
         stage('Clone test-webapp-1 App Repository') {
@@ -39,7 +39,8 @@ podTemplate(label: 'deploy-test', containers: [
             
             container('maven') {
               stage('Build') {
-                  sh "'${mvnHome}/bin/mvn' -P ${activeProfile} -Dmaven.test.skip=true clean install"
+                  echo "ls"
+                  sh "mvn -P ${activeProfile} -Dmaven.test.skip=true clean install"
               }
             }
                         
