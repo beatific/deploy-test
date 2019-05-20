@@ -2,7 +2,8 @@
 podTemplate(label: 'deploy-test', containers: [
     containerTemplate(name: 'kubectl', image: 'smesch/kubectl', ttyEnabled: true, command: 'cat',
         volumes: [secretVolume(secretName: 'kube-config', namespace: 'ns-jenkins', mountPath: '/root/.kube')]),
-    containerTemplate(name: 'maven', image: 'maven', ttyEnabled: true, command: 'cat'),
+    containerTemplate(name: 'maven', image: 'maven', ttyEnabled: true, command: 'cat',
+        volumes: [hostPathVolume(mountPath:'/home/jenkins/workspace/')]),
     containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat',
         envVars: [containerEnvVar(key: 'DOCKER_CONFIG', value: '/tmp/'),])],
         volumes: [secretVolume(secretName: 'docker-config', namespace: 'ns-jenkins', mountPath: '/tmp'),
