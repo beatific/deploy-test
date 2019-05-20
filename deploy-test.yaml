@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1 
+kind: Deployment 
+metadata: 
+  name: deploy-test
+spec: 
+  replicas: 1 
+  template: 
+    metadata: 
+      labels: 
+        app: deploy-test 
+        spec: 
+          containers: 
+          - name: deploy-test 
+            image: beatific/deploy-test 
+            ports: 
+            - containerPort: 8080 
+--- 
+apiVersion: v1 
+kind: Service 
+metadata: 
+  name: deploy-test-svc 
+  labels: 
+    app: deploy-test 
+spec: 
+  type: LoadBalancer
+  ports: 
+  - port: 80
+    targetPort: 8080 
+    protocol: TCP 
+    name: http 
+  selector: 
+    app: deploy-test
