@@ -1,5 +1,4 @@
-   
-}#!groovy
+#!groovy
 podTemplate(label: 'deploy-test', containers: [
     containerTemplate(name: 'kubectl', image: 'smesch/kubectl', ttyEnabled: true, command: 'cat',
         volumes: [secretVolume(secretName: 'kube-config', namespace: 'ns-jenkins', mountPath: '/root/.kube')]),
