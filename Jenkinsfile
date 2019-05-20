@@ -3,7 +3,7 @@ podTemplate(label: 'deploy-test', containers: [
     containerTemplate(name: 'kubectl', image: 'smesch/kubectl', ttyEnabled: true, command: 'cat',
         volumes: [secretVolume(secretName: 'kube-config', namespace: 'ns-jenkins', mountPath: '/root/.kube')]),
     containerTemplate(name: 'maven', image: 'maven', ttyEnabled: true, command: 'cat',
-        volumes: [persistentVolumeClaim(mountPath:'/home/jenkins', claimName: 'maven_pvc')]),
+        volumes: [persistentVolumeClaim(mountPath:'/home/jenkins/', claimName: 'maven_pvc', readOnly: false)]),
     containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat',
         envVars: [containerEnvVar(key: 'DOCKER_CONFIG', value: '/tmp/'),])],
         volumes: [secretVolume(secretName: 'docker-config', namespace: 'ns-jenkins', mountPath: '/tmp'),
@@ -24,23 +24,12 @@ podTemplate(label: 'deploy-test', containers: [
         def K8S_DEPLOYMENT_NAME = 'deploy-test'
         def POD_NAMESPACE = 'default'
         
-        def mvnHome
-        
-        stage('Preparation') { // for display purposes
-          echo "Current workspace : ${workspace}"
-          // Get the Maven tool.
-          // ** NOTE: This 'M3' Maven tool must be configured
-          // **       in the global configuration.
-        //  mvnHome = tool 'M3'
-        }
-
         stage('Clone test-webapp-1 App Repository') {
             checkout scm
             
             
             container('maven') {
               stage('Build') {
-                  echo "ls"
                   sh "mvn -P ${activeProfile} -Dmaven.test.skip=true clean install"
               }
             }
