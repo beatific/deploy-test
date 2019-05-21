@@ -2,7 +2,7 @@
 podTemplate(label: 'deploy-test', containers: [
     containerTemplate(name: 'kubectl', image: 'smesch/kubectl', ttyEnabled: true, command: 'cat',
         volumes: [secretVolume(secretName: 'kube-config', namespace: 'ns-jenkins', mountPath: '/root/.kube')]),
-    containerTemplate(name: 'maven', image: 'maven', ttyEnabled: true, command: 'cat',
+    containerTemplate(name: 'maven', image: 'maven:3.5.2-jdk-8', ttyEnabled: true, command: 'cat',
         volumes: [secretVolume(secretName: 'maven-settings', mountPath: '/root/.m2'), 
                   persistentVolumeClaim(claimName: 'maven-local-repo', mountPath: '/root/.m2nrepo')]),
     containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat',
