@@ -30,10 +30,6 @@ podTemplate(label: 'deploy-test', containers: [
             
             container('maven') {
               stage('Build') {
-                  echo "JENKINS_HOME"
-                  sh "ls '/home/jenkins/.m2'"
-                  echo "JENKINS_HOME"
-                  sh "ls '/var/jenkins/.m2'"
                   sh "mvn -P ${activeProfile} -Dmaven.test.skip=true clean install"
               }
             }
