@@ -9,14 +9,22 @@ podTemplate(label: 'deploy-test', containers: [
                   hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
   ]) {
 
-    node {
+    node('deploy-test') {
 
+        properties(
+            [
+                    [$class: 'ParametersDefinitionProperty', parameterDefinitions:
+                            [
+                                    [$class: 'StringParameterDefinition', defaultValue: 'development', description: 'Maven에서 Active 할 Profile 을 입력하세요. 예) production', name: 'activeProfile']
+                            ]
+                    ]])
+                    
         def DOCKER_HUB_ACCOUNT = 'beatific'
         def DOCKER_IMAGE_NAME = 'deploy-test'
         def K8S_DEPLOYMENT_NAME = 'deploy-test'
         def POD_NAMESPACE = 'default'
         
-        stage('Clone test-webapp-1 App Repository') {
+        stage('Clone git') {
             checkout scm
             
             
