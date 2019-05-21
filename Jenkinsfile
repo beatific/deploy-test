@@ -9,15 +9,8 @@ podTemplate(label: 'deploy-test', containers: [
                   hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
   ]) {
 
-    node('deploy-test') {
+    node {
 
-        properties(
-            [
-                    [$class: 'ParametersDefinitionProperty', parameterDefinitions:
-                            [
-                                    [$class: 'StringParameterDefinition', defaultValue: 'development', description: 'Maven에서 Active 할 Profile 을 입력하세요. 예) production', name: 'activeProfile']
-                            ]
-                    ]])
         def DOCKER_HUB_ACCOUNT = 'beatific'
         def DOCKER_IMAGE_NAME = 'deploy-test'
         def K8S_DEPLOYMENT_NAME = 'deploy-test'
@@ -29,7 +22,7 @@ podTemplate(label: 'deploy-test', containers: [
             
             container('maven') {
               stage('Build') {
-                  sh "mvn -P ${activeProfile} -Dmaven.test.skip=true clean install"
+                  sh "mvn -Dmaven.test.skip=true clean install"
               }
             }
                         
