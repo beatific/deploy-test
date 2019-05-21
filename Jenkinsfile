@@ -2,8 +2,7 @@
 podTemplate(label: 'deploy-test', containers: [
     containerTemplate(name: 'kubectl', image: 'smesch/kubectl', ttyEnabled: true, command: 'cat',
         volumes: [secretVolume(secretName: 'kube-config', namespace: 'ns-jenkins', mountPath: '/root/.kube')]),
-    containerTemplate(name: 'maven', image: 'maven', ttyEnabled: true, command: 'cat',
-        volumes: [persistentVolumeClaim(claimName: 'maven-pvc', mountPath: '/root/.m2/repo')]),
+    containerTemplate(name: 'maven', image: 'maven', ttyEnabled: true, command: 'cat'),
     containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat',
         envVars: [containerEnvVar(key: 'DOCKER_CONFIG', value: '/tmp/'),])],
         volumes: [secretVolume(secretName: 'docker-config', namespace: 'ns-jenkins', mountPath: '/tmp'),
@@ -27,7 +26,12 @@ podTemplate(label: 'deploy-test', containers: [
         stage('Clone test-webapp-1 App Repository') {
             checkout scm
             
-            sh "mvn -P ${activeProfile} -Dmaven.test.skip=true clean install"
+            
+            container('maven') {
+              stage('Build') {
+                  sh "mvn -P ${activeProfile} -Dmaven.test.skip=true clean install"
+              }
+            }
                         
             container('docker') {
                 stage('Docker Build & Push Current & Latest Versions') {
