@@ -27,12 +27,7 @@ podTemplate(label: 'deploy-test', containers: [
         stage('Clone test-webapp-1 App Repository') {
             checkout scm
             
-            
-            container('maven') {
-              stage('Build') {
-                  sh "mvn -P ${activeProfile} -Dmaven.test.skip=true clean install"
-              }
-            }
+            sh "mvn -P ${activeProfile} -Dmaven.test.skip=true clean install"
                         
             container('docker') {
                 stage('Docker Build & Push Current & Latest Versions') {
