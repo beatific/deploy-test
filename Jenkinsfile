@@ -9,7 +9,7 @@ podTemplate(label: 'deploy-test', containers: [
                   hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
   ]) {
 
-    node('deploy-test') {
+    node {
 
         properties(
             [
