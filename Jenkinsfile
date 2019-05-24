@@ -19,7 +19,7 @@ podTemplate(label: 'deploy-test', containers: [
                             ]
                     ]])
                     
-        def DOCKER_HUB_ACCOUNT = 'beatific'
+        def DOCKER_HUB_ACCOUNT = 'metaportal'
         def DOCKER_IMAGE_NAME = 'deploy-test'
         def K8S_DEPLOYMENT_NAME = 'deploy-test'
         def POD_NAMESPACE = 'default'
