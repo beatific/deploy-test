@@ -37,9 +37,9 @@ podTemplate(label: 'deploy-test', containers: [
             container('docker') {
                 stage('Docker Build & Push Current & Latest Versions') {
                     sh ("docker build -t ${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER} -f ./Dockerfile ./")
-                    sh ("docker push ${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
-                    sh ("docker tag ${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER} ${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:latest")
-                    sh ("docker push ${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:latest")
+                    sh ("docker push asia.gcr.io/${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
+                    sh ("docker tag asia.gcr.io/${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER} ${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:latest")
+                    sh ("docker push asia.gcr.io/${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:latest")
                 }
             }
 
